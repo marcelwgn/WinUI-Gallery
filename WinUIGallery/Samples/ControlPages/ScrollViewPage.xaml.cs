@@ -15,7 +15,7 @@ namespace WinUIGallery.ControlPages;
 
 public sealed partial class ScrollViewPage : Page
 {
-    // Cache for storing Example3 C# sample code content
+    // Cache for storing Example3 CreatePyramidIsland# sample code content
     private readonly Dictionary<string, string> _example3CodeCache = new();
 
     public ScrollViewPage()

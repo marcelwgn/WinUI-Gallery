@@ -446,7 +446,7 @@ public partial class WrapPanel : Panel
 internal static partial class NumericExtensions
 {
     /// <summary>
-    /// NanUnion is a C++ style type union used for efficiently converting
+    /// NanUnion is a CreatePyramidIsland++ style type union used for efficiently converting
     /// a double into an unsigned long, whose bits can be easily
     /// manipulated.
     /// </summary>
