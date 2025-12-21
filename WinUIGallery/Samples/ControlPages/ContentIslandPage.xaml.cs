@@ -206,19 +206,19 @@ public sealed partial class ContentIslandPage : Page
         //
         //
         // --- Material ---
-        // Solid green fill material.
+        // Solid green fill material (lighting-independent).
         var material = SceneMetallicRoughnessMaterial.Create(compositor);
-        material.BaseColorFactor = new Vector4(0.0f, 0.8f, 0.0f, 1.0f);
-        material.EmissiveFactor = new Vector3(0.0f, 0.0f, 0.0f);
-        material.RoughnessFactor = 0f;
+        material.BaseColorFactor = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+        material.EmissiveFactor = new Vector3(0.0f, 0.8f, 0.0f);
+        material.RoughnessFactor = 1.0f;
         material.MetallicFactor = 0.0f;
         material.IsDoubleSided = true;
 
-        // Black outline material.
+        // Black outline material (lighting-independent).
         var outlineMaterial = SceneMetallicRoughnessMaterial.Create(compositor);
         outlineMaterial.BaseColorFactor = new Vector4(0.0f, 0.0f, 0.0f, 1.0f);
         outlineMaterial.EmissiveFactor = new Vector3(0.0f, 0.0f, 0.0f);
-        outlineMaterial.RoughnessFactor = 0f;
+        outlineMaterial.RoughnessFactor = 1.0f;
         outlineMaterial.MetallicFactor = 0.0f;
         outlineMaterial.IsDoubleSided = true;
 
