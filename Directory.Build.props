@@ -9,6 +9,8 @@
     <MicrosoftWindowsSDKBuildToolsNugetPackageVersion>10.0.22621.756</MicrosoftWindowsSDKBuildToolsNugetPackageVersion>
     <PublishAot>false</PublishAot>
     <IsAotCompatible>false</IsAotCompatible>
+    <PublishTrimmed>false</PublishTrimmed>
+    <IsTrimmable>false</IsTrimmable>
   </PropertyGroup>
 
   <!-- If we aren't building in the WinUI repo, import the necessary missing props we'd normally pick up from its Directory.Build.props hierarchy -->
