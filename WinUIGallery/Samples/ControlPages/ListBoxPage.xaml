@@ -74,7 +74,7 @@
             </controls:ControlExample.Example>
             <controls:ControlExample.Xaml>
                 <x:String>
-                    &lt;ListBox ItemsSource="{x:Bind Fonts}" DisplayMemberPath="Item1" SelectedValuePath="Item2" Height="164" Loaded="ListBox2_Loaded"/&gt;
+                    &lt;ListBox ItemsSource="{x:Bind Fonts}" DisplayMemberPath="Name" SelectedValuePath="Font" Height="164" Loaded="ListBox2_Loaded"/&gt;
                 </x:String>
             </controls:ControlExample.Xaml>
         </controls:ControlExample>

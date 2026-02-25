@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 namespace WinUIGallery.Helpers;
+[WinRT.GeneratedBindableCustomPropertyAttribute]
 public partial class Language
 {
     public string Name { get; set; }

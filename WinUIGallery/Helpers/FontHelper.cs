@@ -16,6 +16,7 @@ public partial class FontHelper
         new FontItem("Times New Roman", new FontFamily("Times New Roman"))
     };
 }
+[WinRT.GeneratedBindableCustomPropertyAttribute]
 public partial class FontItem
 {
     public string Name { get; set; }

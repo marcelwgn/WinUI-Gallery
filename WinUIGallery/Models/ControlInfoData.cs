@@ -52,6 +52,7 @@ public partial class ControlInfoDataItem
     }
 }
 
+[WinRT.GeneratedBindableCustomPropertyAttribute]
 public partial class ControlInfoDocLink
 {
     public string Title { get; set; } = string.Empty;

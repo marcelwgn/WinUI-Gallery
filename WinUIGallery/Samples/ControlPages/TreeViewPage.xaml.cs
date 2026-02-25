@@ -70,7 +70,8 @@ public sealed partial class TreeViewPage : Page
     }
 }
 
-public class ExplorerItem
+[WinRT.GeneratedBindableCustomPropertyAttribute]
+public partial class ExplorerItem
 {
     public enum ExplorerItemType
     {

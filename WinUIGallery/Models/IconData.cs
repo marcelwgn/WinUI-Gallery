@@ -8,6 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace WinUIGallery.Models;
 
+[WinRT.GeneratedBindableCustomPropertyAttribute]
 public partial class IconData
 {
     public string Name { get; set; } = string.Empty;

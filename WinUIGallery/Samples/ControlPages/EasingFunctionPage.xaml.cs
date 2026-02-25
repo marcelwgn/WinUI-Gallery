@@ -8,6 +8,7 @@ using System.Collections.Generic;
 
 namespace WinUIGallery.ControlPages;
 
+[WinRT.GeneratedBindableCustomPropertyAttribute]
 public partial class NamedEasingFunction
 {
     public string Name { get; private set; }

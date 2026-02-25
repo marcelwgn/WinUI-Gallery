@@ -76,7 +76,7 @@
             </controls:ControlExample.Example>
             <controls:ControlExample.Xaml>
                 <x:String xml:space="preserve">
-&lt;ComboBox ItemsSource="{x:Bind Fonts}" DisplayMemberPath="Item1" SelectedValuePath="Item2"
+&lt;ComboBox ItemsSource="{x:Bind Fonts}" DisplayMemberPath="Name" SelectedValuePath="Font"
           Header="Font" Width="200" Loaded="Combo2_Loaded"/&gt;
                 </x:String>
             </controls:ControlExample.Xaml>
