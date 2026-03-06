@@ -3,8 +3,8 @@
 
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ModelContextProtocol;
 
@@ -12,13 +12,14 @@ namespace WinUIGallery.MCP;
 
 public sealed class McpServerHost : IAsyncDisposable
 {
-    private IHost? _host;
+    public const int Port = 5174;
+
+    private WebApplication? _app;
 
     public async Task StartAsync()
     {
-        var builder = Host.CreateApplicationBuilder();
+        var builder = WebApplication.CreateSlimBuilder();
 
-        // Clear console logging to avoid polluting the stdio JSON-RPC stream
         builder.Logging.ClearProviders();
 
         builder.Services
@@ -29,21 +30,28 @@ public sealed class McpServerHost : IAsyncDisposable
                     Name = "WinUI Gallery",
                     Version = "1.0.0"
                 };
+                options.ServerInstructions =
+                    "This MCP server is hosted inside a running WinUI Gallery application instance. " +
+                    "IMPORTANT: Do NOT close and reopen the application between tool calls. " +
+                    "The app must remain running for this MCP connection to stay alive. " +
+                    "Reuse this single session for all interactions — closing the app terminates the MCP server.";
             })
-            .WithStdioServerTransport()
+            .WithHttpTransport()
             .WithToolsFromAssembly();
 
-        _host = builder.Build();
-        await _host.StartAsync();
+        _app = builder.Build();
+        _app.Urls.Add($"http://localhost:{Port}");
+        _app.MapMcp();
+        await _app.StartAsync();
     }
 
     public async ValueTask DisposeAsync()
     {
-        if (_host is not null)
+        if (_app is not null)
         {
-            await _host.StopAsync();
-            _host.Dispose();
-            _host = null;
+            await _app.StopAsync();
+            await _app.DisposeAsync();
+            _app = null;
         }
     }
 }

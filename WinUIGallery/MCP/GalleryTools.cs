@@ -8,6 +8,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ModelContextProtocol.Server;
 using WinUIGallery.Helpers;
+using WinUIGallery.Pages;
 
 namespace WinUIGallery.MCP;
 
@@ -33,5 +34,28 @@ public sealed class GalleryTools
         })).ToList();
 
         return JsonSerializer.Serialize(samples);
+    }
+
+    [McpServerTool(Name = "open_sample")]
+    [Description("Opens a WinUI Gallery sample page by control name (UniqueId). Use list_samples to discover available control names.")]
+    public async Task<string> OpenSample(
+        [Description("The UniqueId of the control to open (e.g. \"Button\", \"TextBox\", \"NavigationView\").")] string controlName)
+    {
+        var item = await ControlInfoDataSource.GetItemAsync(controlName);
+        if (item is null)
+        {
+            return $"Control '{controlName}' not found. Use list_samples to see available controls.";
+        }
+
+        var tcs = new TaskCompletionSource<bool>();
+
+        App.MainWindow.dispatcherQueue.TryEnqueue(() =>
+        {
+            App.MainWindow.Navigate(typeof(ItemPage), item.UniqueId);
+            tcs.SetResult(true);
+        });
+
+        await tcs.Task;
+        return $"Navigated to '{item.Title}' sample page.";
     }
 }

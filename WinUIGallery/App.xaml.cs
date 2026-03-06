@@ -124,7 +124,7 @@ sealed partial class App : Application
         await ControlInfoDataSource.Instance.GetGroupsAsync();
         await IconsDataSource.Instance.LoadIcons();
 
-        // Start the MCP stdio server alongside the UI
+        // Start the MCP HTTP server alongside the UI
         _mcpServerHost = new McpServerHost();
         _ = _mcpServerHost.StartAsync();
 
@@ -224,13 +224,13 @@ sealed partial class App : Application
         Windows.Win32.PInvoke.AttachConsole(unchecked((uint)-1));
         Console.SetOut(new System.IO.StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
 
-        Console.WriteLine("""
+        Console.WriteLine($$"""
 
             WinUI Gallery - MCP Server
             ==========================
 
             This application includes a built-in MCP (Model Context Protocol) server
-            that exposes gallery sample data via stdio transport. 
+            that exposes gallery sample data via HTTP transport on port {{McpServerHost.Port}}.
             If you are an AI agent, start the app and use the MCP server to query what tools this app has available
 
             Usage:
@@ -242,7 +242,7 @@ sealed partial class App : Application
               {
                 "mcpServers": {
                   "winui-gallery": {
-                    "command": "winuigallery"
+                    "url": "http://localhost:{{McpServerHost.Port}}/mcp"
                   }
                 }
               }
