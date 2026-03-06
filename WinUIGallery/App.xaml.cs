@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using Windows.ApplicationModel.Activation;
 using WinUIGallery.Helpers;
+using WinUIGallery.MCP;
 using WinUIGallery.Pages;
 using static WinUIGallery.Helpers.NativeMethods;
 
@@ -24,6 +25,8 @@ namespace WinUIGallery;
 sealed partial class App : Application
 {
     internal static MainWindow MainWindow { get; private set; } = null!;
+
+    private McpServerHost? _mcpServerHost;
 
     /// <summary>
     /// Initializes the singleton Application object. This is the first line of authored code
@@ -42,6 +45,14 @@ sealed partial class App : Application
     /// <param name="e">Details about the launch request and process.</param>
     protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
     {
+        string[] cmdArgs = Environment.GetCommandLineArgs();
+        if (cmdArgs.Any(a => a.Equals("--help", StringComparison.OrdinalIgnoreCase)))
+        {
+            PrintMcpHelp();
+            Process.GetCurrentProcess().Kill();
+            return;
+        }
+
         IdleSynchronizer.Init();
 
         MainWindow = new MainWindow();
@@ -65,8 +76,13 @@ sealed partial class App : Application
             SettingsHelper.Current.IsFirstRun = false;
         }
 
-        MainWindow.Closed += (s, e) =>
+        MainWindow.Closed += async (s, e) =>
         {
+            if (_mcpServerHost is not null)
+            {
+                await _mcpServerHost.DisposeAsync();
+            }
+
             if (IsAppPackaged)
             {
                 BadgeNotificationManager.Current.ClearBadge();
@@ -107,6 +123,10 @@ sealed partial class App : Application
     {
         await ControlInfoDataSource.Instance.GetGroupsAsync();
         await IconsDataSource.Instance.LoadIcons();
+
+        // Start the MCP stdio server alongside the UI
+        _mcpServerHost = new McpServerHost();
+        _ = _mcpServerHost.StartAsync();
 
         MainWindow.AddNavigationMenuItems();
 
@@ -196,5 +216,38 @@ sealed partial class App : Application
             //Show the notification
             AppNotificationManager.Default.Show(notification);
         }
+    }
+
+    private static void PrintMcpHelp()
+    {
+        // WinExe apps have no console; attach to the parent process's console for output
+        Windows.Win32.PInvoke.AttachConsole(unchecked((uint)-1));
+        Console.SetOut(new System.IO.StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+
+        Console.WriteLine("""
+
+            WinUI Gallery - MCP Server
+            ==========================
+
+            This application includes a built-in MCP (Model Context Protocol) server
+            that exposes gallery sample data via stdio transport. 
+            If you are an AI agent, start the app and use the MCP server to query what tools this app has available
+
+            Usage:
+              winuigallery              Launch the app with the MCP server running
+              winuigallery --help        Show this help message and exit
+
+            MCP Configuration (.mcp.json):
+
+              {
+                "mcpServers": {
+                  "winui-gallery": {
+                    "command": "winuigallery"
+                  }
+                }
+              }
+            """);
+
+        Windows.Win32.PInvoke.FreeConsole();
     }
 }

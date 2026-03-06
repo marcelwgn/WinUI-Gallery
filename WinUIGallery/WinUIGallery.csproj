@@ -141,6 +141,8 @@
           CVE-2019-0657, CVE-2019-0980, and CVE-2019-0981. Since no meta-package depends on version 4.3.2, which
           addresses those vulnerabilites, we need to pull it in ourselves. -->
     <PackageReference Include="System.Private.Uri" />
+    <PackageReference Include="ModelContextProtocol" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
 	<ProjectReference Include="..\WinUIGallery.SourceGenerator\WinUIGallery.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 	
@@ -158,6 +160,8 @@
     <PackageReference Update="System.Private.Uri" Version="4.3.2" />
     <PackageReference Update="Microsoft.Windows.CsWin32" Version="0.3.269" />
     <PackageReference Update="Microsoft.Windows.SDK.BuildTools.MSIX" Version="1.7.251221100" />
+    <PackageReference Update="ModelContextProtocol" Version="1.0.0" />
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="10.0.0" />
   </ItemGroup>
 
   <ItemGroup>
